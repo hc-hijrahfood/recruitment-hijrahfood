@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hijrahfood Applicant Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f4f7f6; padding-bottom: 50px; font-family: 'Segoe UI', Arial, sans-serif; }
+        .form-section { background: #fff; padding: 30px; margin-bottom: 25px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .section-header { border-bottom: 1px solid #e0e0e0; padding-bottom: 10px; margin-bottom: 25px; }
+        .section-title { font-weight: 700; color: #333; margin-bottom: 5px; font-size: 1.25rem; }
+        th { text-align: center; vertical-align: middle; }
+        #signature-pad { border: 1px solid #ced4da; border-radius: 4px; width: 100%; max-width: 400px; height: 150px; cursor: crosshair; background-color: #fff; }
+        .step-container { display: none; }
+        .step-container.active { display: block; }
+        
+        /* Custom Astra-Style File Upload */
+        .profile-upload-box { background-color: #e9ecef; border-radius: 12px; width: 100%; aspect-ratio: 3/4; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+        .profile-upload-box img { width: 100%; height: 100%; object-fit: cover; }
+        .btn-edit-photo { position: absolute; bottom: -5px; right: -5px; width: 40px; height: 40px; border-radius: 50%; background-color: #0056b3; color: white; display: flex; align-items: center; justify-content: center; border: 3px solid #fff; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: 0.2s; }
+        .btn-edit-photo:hover { background-color: #004494; }
+        
+        /* Custom Form Inputs */
+        .form-control::placeholder { color: #9ca3af; font-style: italic; font-size: 0.9rem; }
+        .form-select { color: #333; font-style: normal; font-size: 0.95rem; }
+        .form-select option { color: #333; font-style: normal; }
+        .form-label { font-weight: 500; font-size: 0.95rem; color: #4b5563; }
+        .btn-navy { background-color: #003366; color: #fff; }
+        .btn-navy:hover { background-color: #002244; color: #fff; }
+    </style>
+</head>
+<body>
+
+<div class="container mt-4">
+    <!-- HEADER -->
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom">
+        <div class="d-flex align-items-center mb-2 mb-sm-0">
+            <img src="Hijrahfood Logo.png" alt="Logo Hijrahfood" style="height: 55px; object-fit: contain;" class="me-3">
+            <div>
+                <h5 class="fw-bold mb-0" style="color: #003366; letter-spacing: 0.5px; line-height: 1.2;">HIJRAHFOOD</h5>
+                <span class="text-secondary" style="font-size: 0.95rem; font-weight: 500;">Applicant Portal</span>
+            </div>
+        </div>
+        <div>
+            <h6 class="fw-bold mb-0" style="color: #4b5563; letter-spacing: 0.5px;">Career & Recruitment</h6>
+        </div>
+    </div>
+
+    <!-- PROGRESS BAR -->
+    <div class="mb-4 mt-2">
+        <div class="d-flex justify-content-between small text-muted mb-1 fw-bold">
+            <span id="progress-text">Langkah 1 dari 5</span>
+            <span id="progress-percent">20%</span>
+        </div>
+        <div class="progress" style="height: 8px; border-radius: 10px;">
+            <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 20%; background-color: #0056b3;"></div>
+        </div>
+    </div>
+    
+    <form action="#" method="POST" enctype="multipart/form-data" id="multiStepForm">
+
+        <!-- STEP 1: DATA DIRI -->
+        <div class="step-container active" id="step-1">
+            <div class="form-section">
+                <div class="section-header">
+                    <h4 class="section-title">Data Personal <span class="text-danger">*</span></h4>
+                    <p class="text-muted small mb-0">Silakan lengkapi data-datamu untuk melanjutkan proses registrasi.</p>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-3 mb-4 mb-md-0">
+                        <div class="position-relative" style="max-width: 200px; margin: 0 auto;">
+                            <div class="profile-upload-box border">
+                                <svg id="default-avatar" xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="#a1a1aa" class="bi bi-person-fill" viewBox="0 0 16 16"><path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+                                <img id="profile-preview" src="" alt="Profile Preview" class="d-none">
+                            </div>
+                            <input type="file" id="foto_profil" name="doc_foto" class="d-none" accept=".jpg, .jpeg, .png" required onchange="previewProfilePic(this)">
+                            <label for="foto_profil" class="btn-edit-photo" title="Unggah Pas Foto"><i class="bi bi-pencil-fill"></i></label>
+                        </div>
+                        <ul class="text-muted mt-3 ps-3" style="font-size: 0.8rem; line-height: 1.4;">
+                            <li>Ekstensi File: jpg, jpeg, png (maksimal 2MB).</li>
+                            <li>Pastikan foto wajah terlihat jelas dan rapi.</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-md-9">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Lengkap <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="nama_lengkap" placeholder="Masukkan Nama Lengkap sesuai KTP" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Email <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" name="email" placeholder="contoh: abcde@gmail.com" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nama Panggilan</label>
+                                <input type="text" class="form-control" name="nama_panggilan" placeholder="Masukkan Nama Panggilan">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Nomor HP Aktif <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control" name="no_hp" placeholder="contoh: 081234567890" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">NIK KTP <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" name="nik" placeholder="16 digit NIK" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Gender <span class="text-danger">*</span></label>
+                                <div class="d-flex gap-4 mt-2">
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="gender" id="genderPria" value="Pria" required><label class="form-check-label" for="genderPria">Laki-Laki</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="radio" name="gender" id="genderWanita" value="Wanita"><label class="form-check-label" for="genderWanita">Perempuan</label></div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Tempat & Tanggal Lahir <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <input class="form-control" list="kotaIndonesia" name="tempat_lahir" placeholder="Ketik/Pilih Kota" required>
+                                    <datalist id="kotaIndonesia">
+                                        <option value="Kota Banda Aceh"><option value="Kota Medan"><option value="Kota Padang"><option value="Kota Pekanbaru"><option value="Kota Palembang"><option value="Kota Jambi"><option value="Kota Bandar Lampung"><option value="Kota Batam"><option value="Jakarta Pusat"><option value="Jakarta Selatan"><option value="Jakarta Timur"><option value="Jakarta Barat"><option value="Jakarta Utara"><option value="Kota Bandung"><option value="Kota Bogor"><option value="Kota Bekasi"><option value="Kota Depok"><option value="Kota Tangerang"><option value="Kota Tangerang Selatan"><option value="Kota Semarang"><option value="Kota Yogyakarta"><option value="Kota Surakarta"><option value="Kota Surabaya"><option value="Kota Malang"><option value="Kota Denpasar"><option value="Kota Pontianak"><option value="Kota Banjarmasin"><option value="Kota Samarinda"><option value="Kota Balikpapan"><option value="Kota Makassar"><option value="Kota Manado"><option value="Kota Mataram"><option value="Kota Kupang"><option value="Kota Ambon"><option value="Kota Jayapura">
+                                    </datalist>
+                                    <input type="date" class="form-control" name="tanggal_lahir" id="tanggal_lahir" onchange="hitungUsia()" oninput="hitungUsia()" required>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Usia</label>
+                                <input type="text" class="form-control bg-light" name="usia" id="usia_sekarang" readonly placeholder="Terisi otomatis">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Golongan Darah</label>
+                                <select class="form-select" name="gol_darah">
+                                    <option value="" disabled selected>Pilih Gol. Darah</option>
+                                    <option value="-">Tidak Tahu</option>
+                                    <option value="A">A</option>
+                                    <option value="B">B</option>
+                                    <option value="AB">AB</option>
+                                    <option value="O">O</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Status Pernikahan <span class="text-danger">*</span></label>
+                                <select class="form-select" name="status_pernikahan" id="status_pernikahan" onchange="toggleKeluarga()" required>
+                                    <option value="" disabled selected>Pilih Status Pernikahan</option>
+                                    <option value="Belum Menikah (Single)">Belum Menikah (Single)</option>
+                                    <option value="Menikah (Married)">Menikah (Married)</option>
+                                    <option value="Divorced (Cerai Hidup)">Divorced (Cerai Hidup)</option>
+                                    <option value="Widowed (Cerai Mati)">Widowed (Cerai Mati)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Agama <span class="text-danger">*</span></label>
+                                <select class="form-select" name="agama" required>
+                                    <option value="" disabled selected>Pilih Agama</option>
+                                    <option value="Islam">Islam</option>
+                                    <option value="Katolik">Katolik</option>
+                                    <option value="Protestan">Protestan</option>
+                                    <option value="Hindu">Hindu</option>
+                                    <option value="Buddha">Buddha</option>
+                                    <option value="Konghucu">Konghucu</option>
+                                </select>
+                            </div>
+
+                            <!-- ALAMAT KTP DAN DOMISILI -->
+                            <div class="col-12">
+                                <label class="form-label">Alamat Sesuai KTP <span class="text-danger">*</span></label>
+                                <textarea class="form-control" name="alamat_ktp" id="alamat_ktp" rows="2" placeholder="Masukkan nama jalan, RT/RW, Kelurahan, Kecamatan" required></textarea>
+                            </div>
+                            
+                            <div class="col-12">
+                                <label class="form-label text-primary">Alamat Domisili <span class="text-danger">*</span></label>
+                                <textarea class="form-control" name="alamat" id="alamat_domisili" rows="2" placeholder="Masukkan alamat domisili lengkap beserta RT/RW, Kelurahan, Kecamatan" required></textarea>
+                            </div>
+
+                            <!-- Checkbox Sama dengan KTP -->
+                            <div class="col-12 mt-0 mb-1">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="sama_dengan_ktp" onchange="salinAlamatKTP()">
+                                    <label class="form-check-label text-secondary" for="sama_dengan_ktp">
+                                        Sama dengan alamat sesuai KTP
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label text-primary">Kota Domisili <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="kota_domisili" id="kota_domisili" list="kotaIndonesia" placeholder="Pilih/Ketik Kota Domisili" required>
+                            </div>
+                            <!-- END ALAMAT KTP DAN DOMISILI -->
+
+                            <div class="col-md-6">
+                                <label class="form-label d-block">Kepemilikan SIM</label>
+                                <div class="d-flex flex-wrap gap-3 mt-1">
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" name="sim[]" value="A" id="simA"><label class="form-check-label" for="simA">A</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" name="sim[]" value="C" id="simC"><label class="form-check-label" for="simC">C</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" name="sim[]" value="B1" id="simB1"><label class="form-check-label" for="simB1">B1</label></div>
+                                    <div class="form-check"><input class="form-check-input" type="checkbox" name="sim[]" value="B2" id="simB2"><label class="form-check-label" for="simB2">B2</label></div>
+                                </div>
+                                <small class="text-muted" style="font-size: 0.75rem;">Centang sesuai SIM yang kamu miliki</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">NPWP</label>
+                                <input type="text" class="form-control" name="npwp" placeholder="contoh: 12.345.678.9-012.000">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">Rekening BCA</label>
+                                <input type="text" class="form-control" name="rekening_bca" placeholder="10 digit nomor rekening">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">BPJS Kesehatan</label>
+                                <input type="text" class="form-control" name="bpjs_kes" placeholder="13 digit nomor BPJS">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label">BPJS Ketenagakerjaan</label>
+                                <input type="text" class="form-control" name="bpjs_tk" placeholder="11 / 16 digit nomor BPJS (KPJ)">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 2: PENDIDIKAN & KELUARGA -->
+        <div class="step-container" id="step-2">
+            <div class="form-section">
+                <div class="section-header">
+                    <h4 class="section-title">Riwayat Pendidikan <span class="text-danger">*</span></h4>
+                    <p class="text-muted small mb-0">Isi data riwayat pendidikan formal kamu.</p>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light">
+                            <tr><th>Jenjang</th><th>Nama Sekolah / Universitas</th><th>Periode (Tahun)</th><th>Status Kelulusan</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr><td class="fw-bold">SMA/K</td><td><input type="text" class="form-control" name="sekolah_sma" placeholder="contoh: SMAN 1 Jakarta"></td><td><input type="text" class="form-control" name="periode_sma" placeholder="contoh: 2010 - 2013"></td><td><select class="form-select" name="status_lulus_sma"><option value="" disabled selected>Pilih</option><option value="Lulus">Lulus</option><option value="Tidak Lulus">Tidak Lulus</option></select></td></tr>
+                            <tr><td class="fw-bold">D3</td><td><input type="text" class="form-control" name="univ_d3" placeholder="Nama Perguruan Tinggi"></td><td><input type="text" class="form-control" name="periode_d3" placeholder="contoh: 2013 - 2016"></td><td><select class="form-select" name="status_lulus_d3"><option value="">-</option><option value="Lulus">Lulus</option><option value="Tidak Lulus">Tidak Lulus</option></select></td></tr>
+                            <tr><td class="fw-bold">D4 / S1</td><td><input type="text" class="form-control" name="univ_s1" placeholder="Nama Perguruan Tinggi"></td><td><input type="text" class="form-control" name="periode_s1" placeholder="contoh: 2016 - 2020"></td><td><select class="form-select" name="status_lulus_s1"><option value="">-</option><option value="Lulus">Lulus</option><option value="Tidak Lulus">Tidak Lulus</option></select></td></tr>
+                            <tr><td class="fw-bold">S2</td><td><input type="text" class="form-control" name="univ_s2" placeholder="Nama Perguruan Tinggi"></td><td><input type="text" class="form-control" name="periode_s2" placeholder="contoh: 2021 - 2023"></td><td><select class="form-select" name="status_lulus_s2"><option value="">-</option><option value="Lulus">Lulus</option><option value="Tidak Lulus">Tidak Lulus</option></select></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-header">
+                    <h4 class="section-title">Latar Belakang Keluarga</h4>
+                    <p class="text-muted small mb-0">Isi data susunan keluarga inti dan/atau pasangan.</p>
+                </div>
+                
+                <div class="mb-4">
+                    <p class="fw-bold mb-2">1. Susunan Keluarga Inti (Orang Tua & Saudara)</p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle" id="tabel_keluarga_inti">
+                            <thead class="table-light"><tr><th>Hubungan</th><th>Nama Lengkap</th><th>Tanggal Lahir</th><th>Pendidikan Terakhir</th><th>Pekerjaan</th><th style="width: 60px;">Aksi</th></tr></thead>
+                            <tbody>
+                                <tr><td class="bg-light fw-bold text-center">Ayah</td><td><input type="text" class="form-control" name="ayah_nama" placeholder="Nama Ayah"></td><td><input type="date" class="form-control" name="ayah_ttl"></td><td><input type="text" class="form-control" name="ayah_pendidikan" placeholder="contoh: SMA"></td><td><input type="text" class="form-control" name="ayah_pekerjaan" placeholder="contoh: Wiraswasta"></td><td class="text-center">-</td></tr>
+                                <tr><td class="bg-light fw-bold text-center">Ibu</td><td><input type="text" class="form-control" name="ibu_nama" placeholder="Nama Ibu"></td><td><input type="date" class="form-control" name="ibu_ttl"></td><td><input type="text" class="form-control" name="ibu_pendidikan" placeholder="contoh: D3"></td><td><input type="text" class="form-control" name="ibu_pekerjaan" placeholder="contoh: Ibu Rumah Tangga"></td><td class="text-center">-</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary btn-sm mt-1 fw-bold" onclick="tambahSaudara()"><i class="bi bi-plus-circle me-1"></i> Tambah Saudara</button>
+                </div>
+
+                <div class="mb-2 d-none" id="form_keluarga_pasangan">
+                    <p class="fw-bold mb-2">2. Susunan Keluarga Baru (Pasangan & Anak)</p>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle" id="tabel_keluarga_baru">
+                            <thead class="table-light"><tr><th>Hubungan</th><th>Nama Lengkap</th><th>Tanggal Lahir</th><th>Pendidikan Terakhir</th><th>Pekerjaan</th><th style="width: 60px;">Aksi</th></tr></thead>
+                            <tbody>
+                                <tr><td class="bg-light fw-bold text-center">Pasangan</td><td><input type="text" class="form-control" name="pasangan_nama" placeholder="Nama Pasangan (jika ada)"></td><td><input type="date" class="form-control" name="pasangan_ttl"></td><td><input type="text" class="form-control" name="pasangan_pendidikan" placeholder="contoh: S1"></td><td><input type="text" class="form-control" name="pasangan_pekerjaan" placeholder="contoh: Karyawan Swasta"></td><td class="text-center">-</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary btn-sm mt-1 fw-bold" onclick="tambahAnak()"><i class="bi bi-plus-circle me-1"></i> Tambah Anak</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 3: PEKERJAAN & DATA DASAR -->
+        <div class="step-container" id="step-3">
+            <div class="form-section">
+                <div class="section-header">
+                    <h4 class="section-title">Riwayat Pekerjaan</h4>
+                    <p class="text-muted small mb-0">Isi data pengalaman kerjamu (jika ada). Kosongkan bila *Fresh Graduate*.</p>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle" id="tabel_pekerjaan">
+                        <thead class="table-light">
+                            <tr><th style="min-width: 180px;">Nama Perusahaan</th><th style="min-width: 270px;">Periode (Mulai - Selesai)</th><th style="min-width: 120px;">Lama Bekerja</th><th style="min-width: 160px;">Posisi Terakhir</th><th style="min-width: 180px;">Gaji (THP)</th><th style="min-width: 220px;">Alasan Pindah</th><th style="width: 60px;">Aksi</th></tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><input type="text" class="form-control" name="perusahaan[]" placeholder="PT Contoh"></td>
+                                <td><div class="input-group"><input type="date" class="form-control tgl-mulai" name="tgl_mulai[]" onchange="hitungMasaKerja(this)"><span class="input-group-text">s/d</span><input type="date" class="form-control tgl-selesai" name="tgl_selesai[]" onchange="hitungMasaKerja(this)"></div></td>
+                                <td><input type="text" class="form-control bg-light lama-bekerja" name="lama_bekerja[]" readonly placeholder="Auto"></td>
+                                <td><input type="text" class="form-control" name="posisi_kerja[]" placeholder="contoh: Staff"></td>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-text">Rp</span>
+                                        <input type="text" class="form-control" name="gaji_kerja[]" placeholder="Contoh: 5.000.000" oninput="formatRupiah(this)">
+                                    </div>
+                                </td>
+                                <td><textarea class="form-control" name="alasan_pindah[]" rows="2" placeholder="contoh: Habis Kontrak"></textarea></td>
+                                <td class="text-center"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" class="btn btn-outline-success btn-sm mt-2 fw-bold" onclick="tambahPengalaman()"><i class="bi bi-plus-circle me-1"></i> Tambah Pengalaman Kerja</button>
+            </div>
+
+            <!-- DATA DASAR PELAMAR TERBARU (11 PERTANYAAN) -->
+            <div class="form-section">
+                <div class="section-header">
+                    <h4 class="section-title">Data Dasar Pelamar <span class="text-danger">*</span></h4>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">1. Bagian posisi pekerjaan yang Anda lamar? <span class="text-danger">*</span></label>
+                    <select class="form-select mb-2" name="posisi_pilihan" id="posisi_pilihan_dropdown" onchange="togglePosisiLainnya()" required><option value="" disabled selected>Pilih Posisi Pekerjaan</option></select>
+                    <input type="text" class="form-control d-none" name="posisi_pilihan_lainnya" id="posisi_pilihan_lainnya" placeholder="Ketik posisi yang dilamar">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">2. Apakah Anda memiliki riwayat penyakit tertentu? <span class="text-danger">*</span></label>
+                    <select class="form-select mb-2" name="riwayat_penyakit_opsi" id="riwayat_penyakit_opsi" onchange="togglePenyakit()" required><option value="" disabled selected>Pilih Jawaban</option><option value="Ya">Ya</option><option value="Tidak">Tidak</option></select>
+                    <input type="text" class="form-control d-none" name="riwayat_penyakit_detail" id="riwayat_penyakit_detail" placeholder="Sebutkan riwayat penyakit Anda secara spesifik">
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">3. Apakah Anda sudah memiliki pengalaman bekerja sebelumnya? Jika Iya apakah Anda masih aktif bekerja saat ini? <span class="text-danger">*</span></label>
+                    <select class="form-select" name="pengalaman_kerja_status" required>
+                        <option value="" disabled selected>Pilih Jawaban</option>
+                        <option value="Belum punya pengalaman kerja">Belum punya pengalaman kerja</option>
+                        <option value="Ya, dan masih aktif bekerja saat ini">Ya, dan masih aktif bekerja saat ini</option>
+                        <option value="Ya, dan sudah tidak aktif bekerja">Ya, dan sudah tidak aktif bekerja</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">4. Apakah Anda memiliki kemampuan dalam pengoperasian dasar komputer (Ms. Office, lainnya)? Sebutkan! <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control" name="skill_komputer_dasar" placeholder="Contoh: Ms. Word, Ms. Excel, Internet" required>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">5. Apakah Anda sudah terbiasa bekerja menggunakan email dan sistem data online? <span class="text-danger">*</span></label>
+                    <select class="form-select" name="terbiasa_sistem_online" required>
+                        <option value="" disabled selected>Pilih Jawaban</option>
+                        <option value="Ya, sudah terbiasa">Ya, sudah terbiasa</option>
+                        <option value="Tidak terbiasa">Tidak terbiasa</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">6. Selain program dasar komputer, apakah ada program lain yang Anda kuasai?</label>
+                    <input type="text" class="form-control" name="skill_program_lainnya" placeholder="Contoh: Adobe Photoshop, Accurate, SAP, dll. (Kosongkan jika tidak ada)">
+                </div>
+                <div class="row g-4 mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label">7. Sebutkan Kelebihan (Strength) Anda! <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control mb-2" name="kelebihan_1" placeholder="1. Kelebihan pertama" required>
+                        <input type="text" class="form-control mb-2" name="kelebihan_2" placeholder="2. Kelebihan kedua">
+                        <input type="text" class="form-control" name="kelebihan_3" placeholder="3. Kelebihan ketiga">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">8. Sebutkan Kekurangan (Weakness) Anda! <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control mb-2" name="kekurangan_1" placeholder="1. Kekurangan pertama" required>
+                        <input type="text" class="form-control mb-2" name="kekurangan_2" placeholder="2. Kekurangan kedua">
+                        <input type="text" class="form-control" name="kekurangan_3" placeholder="3. Kekurangan ketiga">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label">9. Deskripsikan diri Anda secara singkat!</label>
+                    <textarea class="form-control" name="deskripsi_diri" rows="3" placeholder="Tuliskan kepribadian atau motto hidupmu..."></textarea>
+                </div>
+                <div class="row g-3 mb-2">
+                    <div class="col-md-6">
+                        <label class="form-label">10. Nominal Gaji (THP) yang Diharapkan?</label>
+                        <div class="input-group">
+                            <span class="input-group-text">Rp</span>
+                            <input type="text" class="form-control" name="gaji_diharapkan" placeholder="Contoh: 5.000.000" oninput="formatRupiah(this)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">11. Kapan Anda siap untuk mulai bekerja?</label>
+                        <input type="text" class="form-control" name="waktu_siap_kerja" placeholder="Contoh: Segera / 1 Bulan Notice">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 4: REFERENSI & LAINNYA -->
+        <div class="step-container" id="step-4">
+            <div class="form-section">
+                <div class="section-header">
+                    <h4 class="section-title">Referensi & Kontak Darurat <span class="text-danger">*</span></h4>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-bold">1. Informasi Lowongan Kerja <span class="text-danger">*</span></label>
+                    <div class="row"><div class="col-md-6"><select class="form-select" name="info_lowongan" required><option value="" disabled selected>Pilih Sumber Informasi</option><option value="LinkedIn">LinkedIn</option><option value="Instagram">Instagram</option><option value="Jobstreet">Jobstreet</option><option value="Telegram">Telegram</option><option value="Facebook">Facebook</option><option value="Website Perusahaan">Website Perusahaan</option><option value="Referensi Karyawan">Referensi Karyawan</option><option value="Lainnya">Lainnya</option></select></div></div>
+                </div>
+                <div class="mb-4">
+                    <label class="form-label fw-bold">2. Tulis nama kerabat untuk referensi Anda!</label>
+                    <div class="row g-3">
+                        <div class="col-md-6"><label class="form-label text-muted small mb-1">Nama</label><input type="text" class="form-control" name="ref_nama" placeholder="Nama referensi"></div>
+                        <div class="col-md-6"><label class="form-label text-muted small mb-1">No. Telepon</label><input type="tel" class="form-control" name="ref_telepon" placeholder="contoh: 08xxxx"></div>
+                        <div class="col-md-6"><label class="form-label text-muted small mb-1">Jabatan</label><input type="text" class="form-control" name="ref_jabatan" placeholder="contoh: Manager"></div>
+                        <div class="col-md-6"><label class="form-label text-muted small mb-1">Perusahaan</label><input type="text" class="form-control" name="ref_perusahaan" placeholder="contoh: PT Maju Jaya"></div>
+                        <div class="col-12"><label class="form-label text-muted small mb-1">Hubungan</label><input type="text" class="form-control" name="ref_hubungan" placeholder="contoh: Mantan Atasan"></div>
+                    </div>
+                </div>
+                <div class="mb-2">
+                    <label class="form-label fw-bold">3. Kontak Darurat (Orang yang dapat dihubungi segera) <span class="text-danger">*</span></label>
+                    <div class="table-responsive">
+                        <table class="table table-bordered align-middle" id="tabel_darurat">
+                            <thead class="table-light"><tr><th style="min-width: 200px;">Nama</th><th style="min-width: 150px;">Hubungan</th><th style="min-width: 180px;">No. Telepon</th><th style="width: 60px;">Aksi</th></tr></thead>
+                            <tbody><tr><td><input type="text" class="form-control" name="darurat_nama[]" placeholder="Nama kontak" required></td><td><input type="text" class="form-control" name="darurat_hubungan[]" placeholder="contoh: Saudara Kandung" required></td><td><input type="tel" class="form-control" name="darurat_telepon[]" placeholder="contoh: 08xxxx" required></td><td class="text-center"></td></tr></tbody>
+                        </table>
+                    </div>
+                    <button type="button" class="btn btn-outline-success btn-sm mt-2 fw-bold" onclick="tambahDarurat()"><i class="bi bi-plus-circle me-1"></i> Tambah Kontak Darurat</button>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <div class="section-header">
+                    <h4 class="section-title">Lainnya</h4>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-bordered align-middle">
+                        <thead class="table-light"><tr><th>Kesediaan Anda perihal</th><th style="width: 45%;">Keterangan</th></tr></thead>
+                        <tbody>
+                            <tr><td>Apakah Anda memiliki keluarga, kerabat, atau teman yang bekerja di Group/Perusahaan ini sebelumnya? Sebutkan!</td><td><textarea class="form-control" name="lainnya_relasi" rows="2" placeholder="Tulis '-' jika tidak ada, atau sebutkan nama & divisi."></textarea></td></tr>
+                            <tr><td>Apakah Anda pernah melamar di Group/Perusahaan ini sebelumnya?<br>Jika ya, kapan dan untuk posisi apa?</td><td><textarea class="form-control" name="lainnya_riwayat_lamar" rows="2" placeholder="Tulis '-' jika tidak pernah."></textarea></td></tr>
+                            <tr><td>Apakah Anda pernah terlibat dengan pihak Kepolisian berkaitan dengan isu pelanggaran kriminal, persidangan atau pelanggaran perdata?</td><td><textarea class="form-control" name="lainnya_kriminal" rows="2" placeholder="Tulis '-' jika tidak pernah."></textarea></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- STEP 5: DOKUMEN & SUBMIT -->
+        <div class="step-container" id="step-5">
+            <div class="form-section">
+                <div class="section-header">
+                    <h4 class="section-title">Dokumen Kelengkapan <span class="text-danger">*</span></h4>
+                    <p class="text-muted small mb-0">Format disarankan: PDF / JPG / PNG. Ukuran File maksimal 2MB per kolom.</p>
+                </div>
+                <div class="row g-3">
+                    <div class="col-12"><label class="form-label fw-bold mb-1">Scan KTP <span class="text-danger">*</span></label><input class="form-control" type="file" name="doc_ktp" accept=".pdf, .jpg, .jpeg, .png" required></div>
+                    <div class="col-12"><label class="form-label fw-bold mb-1">Curriculum Vitae (CV) <span class="text-danger">*</span></label><input class="form-control" type="file" name="doc_cv" accept=".pdf" required></div>
+                    <div class="col-12"><label class="form-label fw-bold mb-1">Ijazah Terakhir <span class="text-danger">*</span></label><input class="form-control" type="file" name="doc_ijazah" accept=".pdf, .jpg, .jpeg" required></div>
+                    <div class="col-12"><label class="form-label fw-bold mb-1">Sertifikat Pendukung</label><input class="form-control" type="file" name="doc_sertifikat" accept=".pdf, .jpg, .jpeg"><small class="text-muted" style="font-size: 0.8rem;">*Opsional</small></div>
+                    <div class="col-12"><label class="form-label fw-bold mb-1">Paklaring (Surat Pengalaman Kerja)</label><input class="form-control" type="file" name="doc_paklaring" accept=".pdf, .jpg, .jpeg"><small class="text-muted" style="font-size: 0.8rem;">*Opsional</small></div>
+                </div>
+            </div>
+
+            <!-- PERNYATAAN & TANDA TANGAN -->
+            <div class="form-section text-center bg-light">
+                <div class="form-check text-start mb-4" style="max-width: 800px; margin: 0 auto;">
+                    <input class="form-check-input" type="checkbox" id="pernyataan" required>
+                    <label class="form-check-label text-muted" for="pernyataan">
+                        <em>Demikian data ini dibuat dengan sebenar-benarnya, apabila terdapat kekeliruan atau pemalsuan dalam pengisiannya, maka saya bersedia diproses sesuai dengan prosedur perusahaan. <span class="text-danger">*</span></em>
+                    </label>
+                </div>
+
+                <div class="mb-4">
+                    <p class="fw-bold mb-2">Tanda Tangan Pelamar <span class="text-danger">*</span></p>
+                    <canvas id="signature-pad"></canvas>
+                    <br>
+                    <button type="button" class="btn btn-sm btn-outline-secondary mt-2" onclick="clearSignature()">
+                        <i class="bi bi-eraser-fill"></i> Hapus / Ulangi TTD
+                    </button>
+                    <input type="hidden" name="signature_data" id="signature_data" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- TOMBOL NAVIGASI -->
+        <div class="d-flex justify-content-between mt-2 mb-5">
+            <button type="button" class="btn btn-outline-secondary px-4 d-none fw-bold" id="btn-prev" onclick="changeStep(-1)"><i class="bi bi-chevron-left me-2"></i> Kembali</button>
+            <div class="ms-auto">
+                <button type="button" class="btn btn-navy px-5 py-2 fw-bold" id="btn-next" onclick="changeStep(1)">Selanjutnya <i class="bi bi-chevron-right ms-2"></i></button>
+                <button type="submit" class="btn btn-success px-5 py-2 fw-bold d-none" id="btn-submit"><i class="bi bi-send-fill me-2"></i> Kirim Registrasi</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- FIREBASE SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-analytics.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDP9QvOhRC7T8e2GOCCmggowv6CfL8r_nI",
+    authDomain: "recruitment-hijrahfood.firebaseapp.com",
+    projectId: "recruitment-hijrahfood",
+    storageBucket: "recruitment-hijrahfood.firebasestorage.app",
+    messagingSenderId: "963264260315",
+    appId: "1:963264260315:web:693757f99378327fa484fe",
+    measurementId: "G-27H85H9ZLR"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+  const db = getFirestore(app);
+
+    window.previewProfilePic = function(input) {
+        const file = input.files[0];
+        const previewImg = document.getElementById('profile-preview');
+        const defaultAvatar = document.getElementById('default-avatar');
+        if (file) {
+            if (file.size > 2097152) { alert("Maksimal ukuran foto 2MB."); input.value = ""; return; }
+            const reader = new FileReader();
+            reader.onload = function(e) { previewImg.src = e.target.result; previewImg.classList.remove('d-none'); defaultAvatar.classList.add('d-none'); }
+            reader.readAsDataURL(file);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        let stored = localStorage.getItem('hijrahfood_positions');
+        let positions = stored ? JSON.parse(stored) : ['Staff Admin', 'Sales Executive', 'IT Support', 'HRD Officer', 'Driver Operasional'];
+        let selectDropdown = document.getElementById('posisi_pilihan_dropdown');
+        selectDropdown.innerHTML = '<option value="" disabled selected>Pilih Posisi Pekerjaan</option>'; 
+        positions.forEach(pos => { let opt = document.createElement('option'); opt.value = pos; opt.innerText = pos; selectDropdown.appendChild(opt); });
+        let optLainnya = document.createElement('option'); optLainnya.value = "Lainnya"; optLainnya.innerText = "Lainnya (Ketik Manual)"; selectDropdown.appendChild(optLainnya);
+    });
+
+    window.togglePosisiLainnya = function() {
+        var val = document.getElementById("posisi_pilihan_dropdown").value;
+        var inputLainnya = document.getElementById("posisi_pilihan_lainnya");
+        if (val === "Lainnya") { inputLainnya.classList.remove("d-none"); inputLainnya.setAttribute("required", "required"); } 
+        else { inputLainnya.classList.add("d-none"); inputLainnya.removeAttribute("required"); inputLainnya.value = ""; }
+    }
+
+    window.togglePenyakit = function() {
+        var val = document.getElementById("riwayat_penyakit_opsi").value;
+        var inputDetail = document.getElementById("riwayat_penyakit_detail");
+        if (val === "Ya") { inputDetail.classList.remove("d-none"); inputDetail.setAttribute("required", "required"); } 
+        else { inputDetail.classList.add("d-none"); inputDetail.removeAttribute("required"); inputDetail.value = ""; }
+    }
+
+    window.salinAlamatKTP = function() {
+        var isChecked = document.getElementById("sama_dengan_ktp").checked;
+        var alamatKTP = document.getElementById("alamat_ktp").value;
+        var alamatDomisili = document.getElementById("alamat_domisili");
+
+        if(isChecked) {
+            alamatDomisili.value = alamatKTP;
+            alamatDomisili.setAttribute("readonly", true);
+            alamatDomisili.classList.add("bg-light");
+        } else {
+            alamatDomisili.value = "";
+            alamatDomisili.removeAttribute("readonly");
+            alamatDomisili.classList.remove("bg-light");
+        }
+    }
+
+    window.toggleKeluarga = function() {
+        var val = document.getElementById("status_pernikahan").value;
+        var formKeluarga = document.getElementById("form_keluarga_pasangan");
+        if (val === "Menikah (Married)" || val === "Divorced (Cerai Hidup)" || val === "Widowed (Cerai Mati)") { 
+            formKeluarga.classList.remove("d-none"); 
+        } else { 
+            formKeluarga.classList.add("d-none"); 
+        }
+    }
+
+    window.tambahSaudara = function() {
+        var tbody = document.querySelector("#tabel_keluarga_inti tbody");
+        var tr = document.createElement("tr");
+        tr.innerHTML = `<td class="bg-light fw-bold text-center">Saudara</td><td><input type="text" class="form-control" name="saudara_nama[]" placeholder="Nama Saudara"></td><td><input type="date" class="form-control" name="saudara_ttl[]"></td><td><input type="text" class="form-control" name="saudara_pendidikan[]" placeholder="contoh: SMA"></td><td><input type="text" class="form-control" name="saudara_pekerjaan[]" placeholder="contoh: Karyawan"></td><td class="text-center"><button type="button" class="btn btn-outline-danger btn-sm" onclick="hapusBaris(this)"><i class="bi bi-trash-fill"></i></button></td>`;
+        tbody.appendChild(tr);
+    }
+
+    window.tambahAnak = function() {
+        var tbody = document.querySelector("#tabel_keluarga_baru tbody");
+        var tr = document.createElement("tr");
+        tr.innerHTML = `<td class="bg-light fw-bold text-center">Anak</td><td><input type="text" class="form-control" name="anak_nama[]" placeholder="Nama Anak"></td><td><input type="date" class="form-control" name="anak_ttl[]"></td><td><input type="text" class="form-control" name="anak_pendidikan[]" placeholder="contoh: SMP"></td><td><input type="text" class="form-control" name="anak_pekerjaan[]" placeholder="contoh: Pelajar"></td><td class="text-center"><button type="button" class="btn btn-outline-danger btn-sm" onclick="hapusBaris(this)"><i class="bi bi-trash-fill"></i></button></td>`;
+        tbody.appendChild(tr);
+    }
+
+    window.hitungUsia = function() {
+        var dobInput = document.getElementById("tanggal_lahir").value;
+        if(dobInput) {
+            var dob = new Date(dobInput), today = new Date();
+            var age = today.getFullYear() - dob.getFullYear(), m = today.getMonth() - dob.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < dob.getDate())) { age--; }
+            document.getElementById("usia_sekarang").value = age + " tahun"; // Diperbarui menjadi 'tahun'
+        }
+    }
+
+    window.formatRupiah = function(element) {
+        let value = element.value.replace(/[^0-9]/g, '');
+        element.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+
+    window.hitungMasaKerja = function(element) {
+        var row = element.closest('tr');
+        var tglMulai = row.querySelector('.tgl-mulai').value, tglSelesai = row.querySelector('.tgl-selesai').value;
+        var inputLama = row.querySelector('.lama-bekerja');
+        if (tglMulai && tglSelesai) {
+            var start = new Date(tglMulai), end = new Date(tglSelesai);
+            if (start > end) { inputLama.value = "Error"; return; }
+            var years = end.getFullYear() - start.getFullYear(), months = end.getMonth() - start.getMonth();
+            if (months < 0) { years--; months += 12; }
+            var text = "";
+            if (years > 0) text += years + " Thn ";
+            if (months > 0) text += months + " Bln";
+            if (years === 0 && months === 0) text = "< 1 Bln";
+            inputLama.value = text.trim();
+        } else { inputLama.value = "-"; }
+    }
+
+    window.tambahPengalaman = function() {
+        var tbody = document.querySelector("#tabel_pekerjaan tbody");
+        var tr = document.createElement("tr");
+        tr.innerHTML = `<td><input type="text" class="form-control" name="perusahaan[]" placeholder="PT Contoh"></td><td><div class="input-group"><input type="date" class="form-control tgl-mulai" name="tgl_mulai[]" onchange="hitungMasaKerja(this)"><span class="input-group-text">s/d</span><input type="date" class="form-control tgl-selesai" name="tgl_selesai[]" onchange="hitungMasaKerja(this)"></div></td><td><input type="text" class="form-control bg-light lama-bekerja" name="lama_bekerja[]" readonly placeholder="Auto"></td><td><input type="text" class="form-control" name="posisi_kerja[]" placeholder="contoh: Staff"></td><td><div class="input-group"><span class="input-group-text">Rp</span><input type="text" class="form-control" name="gaji_kerja[]" placeholder="Nominal" oninput="formatRupiah(this)"></div></td><td><textarea class="form-control" name="alasan_pindah[]" rows="2" placeholder="contoh: Habis Kontrak"></textarea></td><td class="text-center"><button type="button" class="btn btn-outline-danger btn-sm" onclick="hapusBaris(this)"><i class="bi bi-trash-fill"></i></button></td>`;
+        tbody.appendChild(tr);
+    }
+    
+    window.tambahDarurat = function() {
+        var tbody = document.querySelector("#tabel_darurat tbody");
+        var tr = document.createElement("tr");
+        tr.innerHTML = `<td><input type="text" class="form-control" name="darurat_nama[]" required></td><td><input type="text" class="form-control" name="darurat_hubungan[]" required></td><td><input type="tel" class="form-control" name="darurat_telepon[]" required></td><td class="text-center"><button type="button" class="btn btn-outline-danger btn-sm" onclick="hapusBaris(this)"><i class="bi bi-trash-fill"></i></button></td>`;
+        tbody.appendChild(tr);
+    }
+
+    window.hapusBaris = function(btn) { btn.closest("tr").remove(); }
+
+    let currentStep = 1; const totalSteps = 5;
+    window.changeStep = function(direction) {
+        if (direction === 1) {
+            const inputs = document.getElementById(`step-${currentStep}`).querySelectorAll('input, select, textarea');
+            for (let i = 0; i < inputs.length; i++) { if (!inputs[i].checkValidity()) { inputs[i].reportValidity(); return; } }
+        }
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        currentStep += direction;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        const percentage = (currentStep / totalSteps) * 100;
+        document.getElementById('progress-bar').style.width = `${percentage}%`;
+        document.getElementById('progress-text').innerText = `Langkah ${currentStep} dari ${totalSteps}`;
+        document.getElementById('progress-percent').innerText = `${percentage}%`;
+        document.getElementById('btn-prev').classList.toggle('d-none', currentStep === 1);
+        if (currentStep === totalSteps) { document.getElementById('btn-next').classList.add('d-none'); document.getElementById('btn-submit').classList.remove('d-none'); resizeCanvas(); } 
+        else { document.getElementById('btn-next').classList.remove('d-none'); document.getElementById('btn-submit').classList.add('d-none'); }
+        window.scrollTo(0, 0);
+    }
+
+    var canvas = document.getElementById('signature-pad'), ctx = canvas.getContext('2d'), drawing = false;
+    ctx.lineWidth = 2; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.strokeStyle = '#000';
+    window.resizeCanvas = function() { var rect = canvas.getBoundingClientRect(); if (rect.width > 0) { canvas.width = rect.width; canvas.height = rect.height; } }
+    window.addEventListener('resize', resizeCanvas);
+    canvas.addEventListener('mousedown', e => { drawing = true; ctx.beginPath(); ctx.moveTo(e.offsetX, e.offsetY); });
+    canvas.addEventListener('mousemove', e => { if(drawing) { ctx.lineTo(e.offsetX, e.offsetY); ctx.stroke(); } });
+    canvas.addEventListener('mouseup', () => { drawing = false; saveToHiddenInput(); });
+    canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; var t = e.touches[0]; var r = canvas.getBoundingClientRect(); ctx.beginPath(); ctx.moveTo(t.clientX - r.left, t.clientY - r.top); });
+    canvas.addEventListener('touchmove', e => { e.preventDefault(); if(drawing) { var t = e.touches[0]; var r = canvas.getBoundingClientRect(); ctx.lineTo(t.clientX - r.left, t.clientY - r.top); ctx.stroke(); } });
+    canvas.addEventListener('touchend', e => { e.preventDefault(); drawing = false; saveToHiddenInput(); });
+    window.clearSignature = function() { ctx.clearRect(0, 0, canvas.width, canvas.height); document.getElementById('signature_data').value = ''; }
+    window.saveToHiddenInput = function() { var blank = document.createElement('canvas'); blank.width = canvas.width; blank.height = canvas.height; if (canvas.toDataURL() !== blank.toDataURL()) { document.getElementById('signature_data').value = canvas.toDataURL("image/png"); } }
+
+    document.getElementById('multiStepForm').addEventListener('submit', async function(e) {
+        e.preventDefault(); 
+        
+        if(document.getElementById('signature_data').value === "") { 
+            alert("Harap berikan tanda tangan Anda sebelum mengirim formulir."); 
+            changeStep(5 - currentStep);
+            return; 
+        }
+
+        const btnSubmit = document.getElementById('btn-submit');
+        const originalText = btnSubmit.innerHTML;
+        btnSubmit.disabled = true;
+        btnSubmit.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Mengirim...`;
+
+        let formData = new FormData(this);
+        let applicant = { 
+            id_custom: Date.now(),
+            waktu_registrasi: serverTimestamp(), 
+            tanggal_submit_lokal: new Date().toLocaleDateString('id-ID', {day: '2-digit', month: 'short', year: 'numeric'}),
+            status_rekrutmen: 'Baru'
+        };
+
+        formData.forEach((value, key) => {
+            if (key.startsWith('doc_') && value instanceof File) { return; }
+
+            // FORMAT TANGGAL LAHIR KE DD/MM/YYYY
+            if (key === 'tanggal_lahir' && value) {
+                let p = value.split('-');
+                if(p.length === 3 && p[0].length === 4) {
+                    value = `${p[2]}/${p[1]}/${p[0]}`; 
+                }
+            }
+
+            if(!applicant[key]) { applicant[key] = value; } 
+            else {
+                if(!Array.isArray(applicant[key])) { applicant[key] = [applicant[key]]; }
+                applicant[key].push(value);
+            }
+        });
+
+        let photoSrc = document.getElementById('profile-preview').src;
+        if(photoSrc.includes("data:image")) { 
+            applicant.photoBase64 = photoSrc; 
+        }
+        
+        applicant.signatureBase64 = document.getElementById('signature_data').value;
+        
+        let posSelect = document.getElementById('posisi_pilihan_dropdown').value;
+        applicant.posisi_final = (posSelect === 'Lainnya') ? document.getElementById('posisi_pilihan_lainnya').value : posSelect;
+        
+        try {
+            await addDoc(collection(db, "pelamar"), applicant);
+            alert("Berhasil! Lamaran Anda telah terkirim ke sistem Cloud Hijrahfood.");
+            window.location.reload();
+        } catch (error) {
+            console.error("Error adding document: ", error);
+            alert("Terjadi kesalahan saat mengirim data. Silakan coba lagi atau hubungi IT Support.");
+            btnSubmit.disabled = false;
+            btnSubmit.innerHTML = originalText;
+        }
+    });
+
+</script>
+
+</body>
+</html>
